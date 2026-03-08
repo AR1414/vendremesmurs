@@ -130,7 +130,7 @@ export function LeadForm() {
 
           {hasUpperFloor === 'oui' ? (
             <label className={labelClass}>
-              Surface de l'étage (m²)
+              Surface de l&apos;étage (m²)
               <input min={0} step="0.01" type="number" name="upperFloorArea" className={inputClass} placeholder="60" />
             </label>
           ) : null}
@@ -145,7 +145,7 @@ export function LeadForm() {
 
           {hasApartment === 'oui' ? (
             <label className={labelClass}>
-              Surface de l'appartement (m²)
+              Surface de l&apos;appartement (m²)
               <input min={0} step="0.01" type="number" name="apartmentArea" className={inputClass} placeholder="45" />
             </label>
           ) : null}
