@@ -64,6 +64,7 @@ export async function POST(request: Request) {
       apartmentArea: getField(formData, 'apartmentArea'),
 
       occupancyStatus: getField(formData, 'occupancyStatus'),
+      isBusinessAlsoForSale: getField(formData, 'isBusinessAlsoForSale') || undefined,
       annualRentExclCharges: getField(formData, 'annualRentExclCharges'),
       tenantActivity: getField(formData, 'tenantActivity'),
       leaseEndDate: getField(formData, 'leaseEndDate'),
@@ -96,33 +97,34 @@ export async function POST(request: Request) {
 
     const data = parsed.data;
 
-  await prisma.lead.create({
-  data: {
-    ownerName: data.ownerName,
-    ownerEmail: data.ownerEmail,
-    ownerPhone: data.ownerPhone,
+    await prisma.lead.create({
+      data: {
+        ownerName: data.ownerName,
+        ownerEmail: data.ownerEmail,
+        ownerPhone: data.ownerPhone,
 
-    propertyAddress: data.fullAddress,
-    propertyCity: data.city || data.sector,
-    propertyPostalCode: '',
-    propertyType: data.sector,
+        propertyAddress: data.fullAddress,
+        propertyCity: data.city || data.sector,
+        propertyPostalCode: '',
+        propertyType: data.sector,
 
-    areaSqm: Number(data.groundFloorArea),
-    hasStorageOrBasement: data.hasBasement === 'oui',
+        areaSqm: Number(data.groundFloorArea),
+        hasStorageOrBasement: data.hasBasement === 'oui',
 
-    occupancyStatus: data.occupancyStatus,
-    tenantActivity: data.tenantActivity || null,
-    annualRent: data.annualRentExclCharges ? Number(data.annualRentExclCharges) : null,
-    propertyTax: data.propertyTax ? Number(data.propertyTax) : null,
-    leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
-    askingPrice: null,
+        occupancyStatus: data.occupancyStatus,
+        businessSaleStatus: data.isBusinessAlsoForSale ?? null,
+        tenantActivity: data.tenantActivity || null,
+        annualRent: data.annualRentExclCharges ? Number(data.annualRentExclCharges) : null,
+        propertyTax: data.propertyTax ? Number(data.propertyTax) : null,
+        leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
+        askingPrice: null,
 
-    bailCommercialFile: data.commercialLeaseFile,
-    propertyPhotosFile: data.photosFile,
-    floorPlansFile: data.plansFile,
-    otherDocumentsFile: data.otherDocumentsFile
-  }
-});
+        bailCommercialFile: data.commercialLeaseFile,
+        propertyPhotosFile: data.photosFile,
+        floorPlansFile: data.plansFile,
+        otherDocumentsFile: data.otherDocumentsFile
+      }
+    });
 
     await sendLeadNotification(data);
 

@@ -47,6 +47,7 @@ Surface de l'appartement: ${lead.apartmentArea ?? 'N/A'} m²
 
 SECTION 3 — Situation locative
 Statut: ${lead.occupancyStatus}
+Le fonds de commerce est également à vendre: ${lead.isBusinessAlsoForSale ?? 'Non renseigné'}
 Loyer annuel hors charges: ${lead.annualRentExclCharges ?? 'N/A'}
 Activité du locataire: ${lead.tenantActivity ?? 'N/A'}
 Date de fin de bail: ${lead.leaseEndDate ?? 'N/A'}

@@ -1,0 +1,25 @@
+-- CreateTable
+CREATE TABLE "Lead" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "ownerName" TEXT NOT NULL,
+    "ownerEmail" TEXT NOT NULL,
+    "ownerPhone" TEXT NOT NULL,
+    "propertyAddress" TEXT NOT NULL,
+    "propertyCity" TEXT NOT NULL,
+    "propertyPostalCode" TEXT NOT NULL,
+    "propertyType" TEXT NOT NULL,
+    "areaSqm" INTEGER NOT NULL,
+    "hasStorageOrBasement" BOOLEAN NOT NULL,
+    "occupancyStatus" TEXT NOT NULL,
+    "businessSaleStatus" TEXT,
+    "tenantActivity" TEXT,
+    "annualRent" REAL,
+    "propertyTax" REAL,
+    "leaseEndDate" DATETIME,
+    "askingPrice" REAL,
+    "bailCommercialFile" TEXT,
+    "propertyPhotosFile" TEXT,
+    "floorPlansFile" TEXT,
+    "otherDocumentsFile" TEXT,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
