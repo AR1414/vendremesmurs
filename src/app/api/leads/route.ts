@@ -126,7 +126,7 @@ export async function POST(request: Request) {
       }
     });
 
-    await sendLeadNotification(data);
+    // await sendLeadNotification(data);
 
     return NextResponse.json(
       {
