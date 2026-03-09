@@ -31,3 +31,4 @@ model Lead {
   otherDocumentsFile   String?
   createdAt            DateTime @default(now())
 }
+
