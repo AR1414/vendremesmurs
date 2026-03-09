@@ -8,7 +8,7 @@ const trustItems = [
   { title: 'Réponse rapide', icon: 'flash' },
   { title: 'Interlocuteur direct', icon: 'user' },
   { title: 'Dossier complétable en plusieurs temps', icon: 'stack' }
-];
+] as const;
 
 const steps = [
   'Vous renseignez les informations essentielles du bien',
