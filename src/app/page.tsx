@@ -122,6 +122,13 @@ export default function HomePage() {
           </div>
         </div>
 
+        <section className="mt-10 rounded-3xl border border-slate-200 bg-[#f7f8fb] p-7 md:p-9">
+          <h2 className="font-serif text-3xl text-[#0B1F3A]">Ce que fait VMM</h2>
+          <p className="mt-4 text-sm leading-relaxed text-slate-700 md:text-base">
+            VMM vous permet d’obtenir une estimation de vos murs commerciaux et vous met en relation avec des acquéreurs capables de se positionner comptant, sans condition suspensive de crédit. Grâce à notre réseau, nous pouvons vous aider à trouver rapidement un preneur.
+          </p>
+        </section>
+
         <section className="mt-12">
           <h2 className="text-center font-serif text-3xl text-[#0B1F3A]">Un accompagnement premium et confidentiel</h2>
           <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
