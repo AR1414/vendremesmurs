@@ -32,6 +32,7 @@ export const leadSchema = z
     apartmentArea: optionalNumber,
 
     occupancyStatus: z.enum(['libre', 'occupé']),
+    isBusinessAlsoForSale: z.enum(['oui', 'non']).optional(),
     annualRentExclCharges: optionalNumber,
     tenantActivity: z.string().optional(),
     leaseEndDate: optionalDate,

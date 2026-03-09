@@ -3,30 +3,31 @@ generator client {
 }
 
 datasource db {
-  provider  = "sqlite"
-  url       = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Lead {
-  id                    Int      @id @default(autoincrement())
-  ownerName             String
-  ownerEmail            String
-  ownerPhone            String
-  propertyAddress       String
-  propertyCity          String
-  propertyPostalCode    String
-  propertyType          String
-  areaSqm               Int
-  hasStorageOrBasement  Boolean
-  occupancyStatus       String
-  tenantActivity        String?
-  annualRent            Float?
-  propertyTax           Float?
-  leaseEndDate          DateTime?
-  askingPrice           Float?
-  bailCommercialFile    String?
-  propertyPhotosFile    String?
-  floorPlansFile        String?
-  otherDocumentsFile    String?
-  createdAt             DateTime @default(now())
+  id                   Int      @id @default(autoincrement())
+  ownerName            String
+  ownerEmail           String
+  ownerPhone           String
+  propertyAddress      String
+  propertyCity         String
+  propertyPostalCode   String
+  propertyType         String
+  areaSqm              Int
+  hasStorageOrBasement Boolean
+  occupancyStatus      String
+  businessSaleStatus   String?
+  tenantActivity       String?
+  annualRent           Float?
+  propertyTax          Float?
+  leaseEndDate         DateTime?
+  askingPrice          Float?
+  bailCommercialFile   String?
+  propertyPhotosFile   String?
+  floorPlansFile       String?
+  otherDocumentsFile   String?
+  createdAt            DateTime @default(now())
 }
