@@ -96,40 +96,33 @@ export async function POST(request: Request) {
 
     const data = parsed.data;
 
-    await prisma.lead.create({
-      data: {
-        fullAddress: data.fullAddress,
-        sector: data.sector,
-        city: data.city || null,
+  await prisma.lead.create({
+  data: {
+    ownerName: data.ownerName,
+    ownerEmail: data.ownerEmail,
+    ownerPhone: data.ownerPhone,
 
-        groundFloorArea: data.groundFloorArea,
-        hasBasement: data.hasBasement === 'oui',
-        basementArea: data.basementArea,
-        hasUpperFloor: data.hasUpperFloor === 'oui',
-        upperFloorArea: data.upperFloorArea,
-        hasApartment: data.hasApartment === 'oui',
-        apartmentArea: data.apartmentArea,
+    propertyAddress: data.fullAddress,
+    propertyCity: data.city || data.sector,
+    propertyPostalCode: '',
+    propertyType: data.sector,
 
-        occupancyStatus: data.occupancyStatus,
-        annualRentExclCharges: data.annualRentExclCharges,
-        tenantActivity: data.tenantActivity || null,
-        leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
-        annualCharges: data.annualCharges,
-        propertyTax: data.propertyTax,
+    areaSqm: Number(data.groundFloorArea),
+    hasStorageOrBasement: data.hasBasement === 'oui',
 
-        commercialLeaseFile: data.commercialLeaseFile,
-        propertyTaxFile: data.propertyTaxFile,
-        plansFile: data.plansFile,
-        photosFile: data.photosFile,
-        otherDocumentsFile: data.otherDocumentsFile,
+    occupancyStatus: data.occupancyStatus,
+    tenantActivity: data.tenantActivity || null,
+    annualRent: data.annualRentExclCharges ? Number(data.annualRentExclCharges) : null,
+    propertyTax: data.propertyTax ? Number(data.propertyTax) : null,
+    leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
+    askingPrice: null,
 
-        additionalInfo: data.additionalInfo || null,
-
-        ownerName: data.ownerName,
-        ownerPhone: data.ownerPhone,
-        ownerEmail: data.ownerEmail
-      }
-    });
+    bailCommercialFile: data.commercialLeaseFile,
+    propertyPhotosFile: data.photosFile,
+    floorPlansFile: data.plansFile,
+    otherDocumentsFile: data.otherDocumentsFile
+  }
+});
 
     await sendLeadNotification(data);
 
