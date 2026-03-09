@@ -5,7 +5,6 @@ import path from 'node:path';
 import { put } from '@vercel/blob';
 import { leadSchema } from '@/lib/lead-schema';
 import { prisma } from '@/lib/prisma';
-// import { sendLeadNotification } from '@/lib/mailer';
 
 export const runtime = 'nodejs';
 
