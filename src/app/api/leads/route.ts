@@ -125,8 +125,6 @@ export async function POST(request: Request) {
       }
     });
 
-    // await sendLeadNotification(data);
-
     return NextResponse.json(
       {
         message:
