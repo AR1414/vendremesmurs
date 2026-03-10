@@ -14,8 +14,7 @@ export async function sendLeadNotification(lead: LeadInput): Promise<void> {
   const port = Number(requiredEnv('SMTP_PORT'));
   const user = requiredEnv('SMTP_USER');
   const pass = requiredEnv('SMTP_PASS');
-  const from = requiredEnv('EMAIL_FROM');
-  const to = requiredEnv('EMAIL_TO');
+  const to = requiredEnv('NOTIFICATION_EMAIL');
 
   const transporter = nodemailer.createTransport({
     host,
@@ -25,49 +24,37 @@ export async function sendLeadNotification(lead: LeadInput): Promise<void> {
   });
 
   await transporter.sendMail({
-    from,
+    from: user,
     to,
-    subject: 'Nouveau lead - VMM VendreMesMurs.fr',
+    subject: 'Nouvelle demande VMM - Murs commerciaux',
     text: `
-Nouveau dossier propriétaire (VMM)
+Nouvelle demande reçue :
 
-SECTION 1 — Localisation du bien
-Adresse complète: ${lead.fullAddress}
-Secteur: ${lead.sector === 'premiere-couronne' ? 'Première couronne' : 'Paris'}
-Ville: ${lead.city ?? 'N/A'}
+Nom : ${lead.ownerName}
+Téléphone : ${lead.ownerPhone}
+Email : ${lead.ownerEmail}
 
-SECTION 2 — Surfaces
-Surface du RDC: ${lead.groundFloorArea} m²
-Sous-sol présent: ${lead.hasBasement}
-Surface du sous-sol: ${lead.basementArea ?? 'N/A'} m²
-Étage présent: ${lead.hasUpperFloor}
-Surface de l'étage: ${lead.upperFloorArea ?? 'N/A'} m²
-Appartement inclus: ${lead.hasApartment}
-Surface de l'appartement: ${lead.apartmentArea ?? 'N/A'} m²
+Adresse complète : ${lead.fullAddress}
+Secteur : ${lead.sector}
+Ville : ${lead.city || 'Non renseignée'}
+Surface du RDC : ${lead.groundFloorArea}
+Statut d'occupation : ${lead.occupancyStatus}
+Fonds de commerce également à vendre : ${lead.isBusinessAlsoForSale || 'Non renseigné'}
+Loyer annuel hors charges : ${lead.annualRentExclCharges ?? 'Non renseigné'}
+Activité du locataire : ${lead.tenantActivity || 'Non renseignée'}
+Date de fin de bail : ${lead.leaseEndDate || 'Non renseignée'}
+Charges annuelles : ${lead.annualCharges ?? 'Non renseigné'}
+Taxe foncière : ${lead.propertyTax ?? 'Non renseigné'}
 
-SECTION 3 — Situation locative
-Statut: ${lead.occupancyStatus}
-Le fonds de commerce est également à vendre: ${lead.isBusinessAlsoForSale ?? 'Non renseigné'}
-Loyer annuel hors charges: ${lead.annualRentExclCharges ?? 'N/A'}
-Activité du locataire: ${lead.tenantActivity ?? 'N/A'}
-Date de fin de bail: ${lead.leaseEndDate ?? 'N/A'}
-Charges annuelles: ${lead.annualCharges ?? 'N/A'}
-Taxe foncière: ${lead.propertyTax ?? 'N/A'}
+Informations complémentaires :
+${lead.additionalInfo || 'Aucune'}
 
-SECTION 4 — Documents
-Bail commercial: ${lead.commercialLeaseFile ?? 'Non transmis'}
-Taxe foncière: ${lead.propertyTaxFile ?? 'Non transmise'}
-Plans: ${lead.plansFile ?? 'Non transmis'}
-Photos: ${lead.photosFile ?? 'Non transmises'}
-Autres documents: ${lead.otherDocumentsFile ?? 'Non transmis'}
-
-SECTION 5 — Informations complémentaires
-${lead.additionalInfo ?? 'Aucune information complémentaire'}
-
-SECTION 6 — Coordonnées du propriétaire
-Nom: ${lead.ownerName}
-Téléphone: ${lead.ownerPhone}
-Email: ${lead.ownerEmail}
+Documents (liens si disponibles) :
+- Bail commercial : ${lead.commercialLeaseFile || 'Non transmis'}
+- Taxe foncière : ${lead.propertyTaxFile || 'Non transmis'}
+- Plans : ${lead.plansFile || 'Non transmis'}
+- Photos : ${lead.photosFile || 'Non transmises'}
+- Autres documents : ${lead.otherDocumentsFile || 'Non transmis'}
     `.trim()
   });
 }
