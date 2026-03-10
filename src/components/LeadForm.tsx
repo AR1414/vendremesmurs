@@ -283,17 +283,34 @@ export function LeadForm() {
         </div>
       </fieldset>
 
-      <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
-        <p className="text-xs text-slate-600">En soumettant, vous acceptez d’être recontacté par notre équipe VMM.</p>
-        <div className="flex flex-col items-start md:items-end">
-          <p className="mt-[10px] text-[#dc2626] font-medium text-sm">
-            Si le formulaire ne s’envoie pas, veuillez retirer les documents ajoutés et envoyer la demande sans fichiers.
-            Nous vous les demanderons lorsque nous vous recontacterons.
+      <div className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/60 p-4 md:p-6">
+        <div className="space-y-3">
+          <p className="text-xs leading-relaxed text-slate-600">
+            En soumettant, vous acceptez d’être recontacté par notre équipe VMM.
           </p>
+
+          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
+            <p className="text-sm font-medium leading-relaxed text-[#dc2626]">
+              Si le formulaire ne s’envoie pas, veuillez retirer les documents ajoutés et envoyer la demande{' '}
+              <span className="font-semibold underline decoration-red-300 underline-offset-2">sans fichiers</span>.
+              Nous vous les demanderons lorsque nous vous recontacterons.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-[#F4C542]/40 bg-[#FFF9E8] px-4 py-3">
+            <p className="text-sm leading-relaxed text-slate-700">
+              Après réception de votre dossier, notre équipe pourra vous proposer une{' '}
+              <span className="font-semibold text-[#0B1F3A]">estimation gratuite</span> de la valeur de vos{' '}
+              <span className="font-semibold text-[#0B1F3A]">murs commerciaux</span>.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-5 border-t border-slate-200/80 pt-4 flex justify-start md:justify-end">
           <button
             type="submit"
             disabled={loading}
-            className="mt-3 rounded-xl bg-[#0B1F3A] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#112b4f] disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-xl bg-[#0B1F3A] px-6 py-3 text-sm font-semibold text-white shadow-[0_10px_25px_-12px_rgba(11,31,58,0.6)] transition hover:bg-[#112b4f] disabled:cursor-not-allowed disabled:opacity-60"
           >
             {loading ? 'Envoi en cours...' : 'Envoyer ma demande'}
           </button>
