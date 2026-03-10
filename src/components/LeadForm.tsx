@@ -285,13 +285,19 @@ export function LeadForm() {
 
       <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 md:flex-row md:items-center md:justify-between">
         <p className="text-xs text-slate-600">En soumettant, vous acceptez d’être recontacté par notre équipe VMM.</p>
-        <button
-          type="submit"
-          disabled={loading}
-          className="rounded-xl bg-[#0B1F3A] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#112b4f] disabled:cursor-not-allowed disabled:opacity-60"
-        >
-          {loading ? 'Envoi en cours...' : 'Envoyer ma demande'}
-        </button>
+        <div className="flex flex-col items-start md:items-end">
+          <p className="mt-[10px] text-[#dc2626] font-medium text-sm">
+            Si le formulaire ne s’envoie pas, veuillez retirer les documents ajoutés et envoyer la demande sans fichiers.
+            Nous vous les demanderons lorsque nous vous recontacterons.
+          </p>
+          <button
+            type="submit"
+            disabled={loading}
+            className="mt-3 rounded-xl bg-[#0B1F3A] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#112b4f] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {loading ? 'Envoi en cours...' : 'Envoyer ma demande'}
+          </button>
+        </div>
       </div>
 
       {message ? (
