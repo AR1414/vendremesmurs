@@ -99,32 +99,36 @@ export async function POST(request: Request) {
 
     await prisma.lead.create({
       data: {
-        ownerName: data.ownerName,
-        ownerEmail: data.ownerEmail,
-        ownerPhone: data.ownerPhone,
+        fullAddress: data.fullAddress,
+        sector: data.sector,
+        city: data.city || null,
 
-        propertyAddress: data.fullAddress,
-        propertyCity: data.city || data.sector,
-        propertyPostalCode: '',
-        propertyType: data.sector,
-
-        areaSqm: Number(data.groundFloorArea),
-        hasStorageOrBasement: data.hasBasement === 'oui',
+        groundFloorArea: data.groundFloorArea,
+        hasBasement: data.hasBasement,
+        basementArea: data.basementArea,
+        hasUpperFloor: data.hasUpperFloor,
+        upperFloorArea: data.upperFloorArea,
+        hasApartment: data.hasApartment,
+        apartmentArea: data.apartmentArea,
 
         occupancyStatus: data.occupancyStatus,
-        businessSaleStatus: data.isBusinessAlsoForSale ?? null,
+        isBusinessAlsoForSale: data.isBusinessAlsoForSale ?? null,
+        annualRentExclCharges: data.annualRentExclCharges,
         tenantActivity: data.tenantActivity || null,
-        annualRent: data.annualRentExclCharges ? Number(data.annualRentExclCharges) : null,
-        propertyTax: data.propertyTax ? Number(data.propertyTax) : null,
         leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
-        askingPrice: null,
+        annualCharges: data.annualCharges,
+        propertyTax: data.propertyTax,
 
         additionalInfo: data.additionalInfo || null,
 
-        bailCommercialFile: data.commercialLeaseFile,
+        ownerName: data.ownerName,
+        ownerPhone: data.ownerPhone,
+        ownerEmail: data.ownerEmail,
+
+        commercialLeaseFile: data.commercialLeaseFile,
         propertyTaxFile: data.propertyTaxFile,
-        floorPlansFile: data.plansFile,
-        propertyPhotosFile: data.photosFile,
+        plansFile: data.plansFile,
+        photosFile: data.photosFile,
         otherDocumentsFile: data.otherDocumentsFile
       }
     });

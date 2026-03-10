@@ -37,7 +37,15 @@ Email : ${lead.ownerEmail}
 Adresse complète : ${lead.fullAddress}
 Secteur : ${lead.sector}
 Ville : ${lead.city || 'Non renseignée'}
+
 Surface du RDC : ${lead.groundFloorArea}
+Sous-sol présent : ${lead.hasBasement}
+Surface du sous-sol : ${lead.basementArea ?? 'Non renseignée'}
+Étage présent : ${lead.hasUpperFloor}
+Surface de l'étage : ${lead.upperFloorArea ?? 'Non renseignée'}
+Appartement inclus : ${lead.hasApartment}
+Surface de l'appartement : ${lead.apartmentArea ?? 'Non renseignée'}
+
 Statut d'occupation : ${lead.occupancyStatus}
 Fonds de commerce également à vendre : ${lead.isBusinessAlsoForSale || 'Non renseigné'}
 Loyer annuel hors charges : ${lead.annualRentExclCharges ?? 'Non renseigné'}
