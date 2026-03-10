@@ -3,6 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { put } from '@vercel/blob';
+import nodemailer from 'nodemailer';
 import { leadSchema } from '@/lib/lead-schema';
 import { prisma } from '@/lib/prisma';
 
@@ -118,11 +119,66 @@ export async function POST(request: Request) {
         leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
         askingPrice: null,
 
+        additionalInfo: data.additionalInfo || null,
+
         bailCommercialFile: data.commercialLeaseFile,
-        propertyPhotosFile: data.photosFile,
+        propertyTaxFile: data.propertyTaxFile,
         floorPlansFile: data.plansFile,
+        propertyPhotosFile: data.photosFile,
         otherDocumentsFile: data.otherDocumentsFile
       }
+    });
+
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: Number(process.env.SMTP_PORT) === 465,
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS
+      }
+    });
+
+    await transporter.sendMail({
+      from: process.env.SMTP_USER,
+      to: process.env.NOTIFICATION_EMAIL,
+      subject: 'Nouvelle demande VendreMesMurs',
+      text: `
+Nouvelle demande reçue :
+
+Nom : ${data.ownerName}
+Téléphone : ${data.ownerPhone}
+Email : ${data.ownerEmail}
+
+Adresse : ${data.fullAddress}
+Secteur : ${data.sector}
+Ville : ${data.city || ''}
+Surface RDC : ${data.groundFloorArea}
+Sous-sol : ${data.hasBasement}
+Surface sous-sol : ${data.basementArea || ''}
+Étage : ${data.hasUpperFloor}
+Surface étage : ${data.upperFloorArea || ''}
+Appartement : ${data.hasApartment}
+Surface appartement : ${data.apartmentArea || ''}
+
+Occupation : ${data.occupancyStatus}
+Fonds de commerce à vendre : ${data.isBusinessAlsoForSale || ''}
+Loyer annuel hors charges : ${data.annualRentExclCharges || ''}
+Activité du locataire : ${data.tenantActivity || ''}
+Fin de bail : ${data.leaseEndDate || ''}
+Charges annuelles : ${data.annualCharges || ''}
+Taxe foncière : ${data.propertyTax || ''}
+
+Commentaire :
+${data.additionalInfo || ''}
+
+Documents :
+Bail commercial : ${data.commercialLeaseFile || ''}
+Taxe foncière : ${data.propertyTaxFile || ''}
+Plans : ${data.plansFile || ''}
+Photos : ${data.photosFile || ''}
+Autres documents : ${data.otherDocumentsFile || ''}
+`
     });
 
     return NextResponse.json(
