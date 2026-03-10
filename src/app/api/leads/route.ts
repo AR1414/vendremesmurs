@@ -3,8 +3,8 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { randomUUID } from 'node:crypto';
 import path from 'node:path';
 import { put } from '@vercel/blob';
-import nodemailer from 'nodemailer';
 import { leadSchema } from '@/lib/lead-schema';
+import { sendLeadNotification } from '@/lib/mailer';
 import { prisma } from '@/lib/prisma';
 
 export const runtime = 'nodejs';
@@ -56,48 +56,48 @@ export async function POST(request: Request) {
       city: getField(formData, 'city'),
 
       groundFloorArea: getField(formData, 'groundFloorArea'),
-      hasBasement: getField(formData, 'hasBasement'),
+      hasBasement: getField(formData, 'hasBasement') || 'non',
       basementArea: getField(formData, 'basementArea'),
-
-      hasUpperFloor: getField(formData, 'hasUpperFloor'),
+      hasUpperFloor: getField(formData, 'hasUpperFloor') || 'non',
       upperFloorArea: getField(formData, 'upperFloorArea'),
-
-      hasApartment: getField(formData, 'hasApartment'),
+      hasApartment: getField(formData, 'hasApartment') || 'non',
       apartmentArea: getField(formData, 'apartmentArea'),
 
       occupancyStatus: getField(formData, 'occupancyStatus'),
-      isBusinessAlsoForSale: getField(formData, 'isBusinessAlsoForSale'),
-
+      isBusinessAlsoForSale: getField(formData, 'isBusinessAlsoForSale') || undefined,
       annualRentExclCharges: getField(formData, 'annualRentExclCharges'),
       tenantActivity: getField(formData, 'tenantActivity'),
       leaseEndDate: getField(formData, 'leaseEndDate'),
-
       annualCharges: getField(formData, 'annualCharges'),
       propertyTax: getField(formData, 'propertyTax'),
-
-      additionalInfo: getField(formData, 'additionalInfo'),
-
-      ownerName: getField(formData, 'ownerName'),
-      ownerPhone: getField(formData, 'ownerPhone'),
-      ownerEmail: getField(formData, 'ownerEmail'),
 
       commercialLeaseFile,
       propertyTaxFile,
       plansFile,
       photosFile,
-      otherDocumentsFile
+      otherDocumentsFile,
+
+      additionalInfo: getField(formData, 'additionalInfo'),
+
+      ownerName: getField(formData, 'ownerName'),
+      ownerPhone: getField(formData, 'ownerPhone'),
+      ownerEmail: getField(formData, 'ownerEmail')
     };
 
     const parsed = leadSchema.safeParse(payload);
 
     if (!parsed.success) {
       return NextResponse.json(
-        { error: parsed.error.issues[0]?.message || 'Données invalides.' },
+        {
+          error: parsed.error.issues[0]?.message || 'Données invalides.'
+        },
         { status: 400 }
       );
     }
 
     const data = parsed.data;
+
+    const normalizedAdditionalInfo = [data.additionalInfo?.trim() || null].filter((line) => line !== null).join('\n').trim();
 
     await prisma.lead.create({
       data: {
@@ -111,95 +111,49 @@ export async function POST(request: Request) {
         propertyType: data.sector,
 
         areaSqm: Number(data.groundFloorArea),
-        hasStorageOrBasement: data.hasBasement === 'Oui',
-
+        hasStorageOrBasement: data.hasBasement === 'oui',
         basementArea: data.basementArea ? Number(data.basementArea) : null,
         upperFloorArea: data.upperFloorArea ? Number(data.upperFloorArea) : null,
         apartmentArea: data.apartmentArea ? Number(data.apartmentArea) : null,
 
         occupancyStatus: data.occupancyStatus,
-        businessSaleStatus: data.isBusinessAlsoForSale || null,
+        businessSaleStatus: data.isBusinessAlsoForSale ?? null,
         tenantActivity: data.tenantActivity || null,
-
         annualRent: data.annualRentExclCharges ? Number(data.annualRentExclCharges) : null,
         annualCharges: data.annualCharges ? Number(data.annualCharges) : null,
-
-        propertyTax: data.propertyTax ? Number(data.propertyTax) : null,
+        propertyTax: data.propertyTax,
         leaseEndDate: data.leaseEndDate ? new Date(data.leaseEndDate) : null,
+        askingPrice: null,
 
-        additionalInfo: data.additionalInfo || null,
+        additionalInfo: normalizedAdditionalInfo || null,
 
         bailCommercialFile: data.commercialLeaseFile,
         propertyTaxFile: data.propertyTaxFile,
-        propertyPhotosFile: data.photosFile,
         floorPlansFile: data.plansFile,
+        propertyPhotosFile: data.photosFile,
         otherDocumentsFile: data.otherDocumentsFile
       }
     });
 
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: true,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS
-      }
-    });
-
-    await transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: process.env.NOTIFICATION_EMAIL,
-      subject: 'Nouvelle demande VendreMesMurs',
-      text: `
-Nouvelle demande reçue
-
-Nom : ${data.ownerName}
-Téléphone : ${data.ownerPhone}
-Email : ${data.ownerEmail}
-
-Adresse : ${data.fullAddress}
-
-Surface RDC : ${data.groundFloorArea}
-Sous-sol : ${data.hasBasement}
-Surface sous-sol : ${data.basementArea}
-
-Surface étage : ${data.upperFloorArea}
-Surface appartement : ${data.apartmentArea}
-
-Statut : ${data.occupancyStatus}
-Fonds de commerce à vendre : ${data.isBusinessAlsoForSale}
-
-Loyer annuel : ${data.annualRentExclCharges}
-Charges annuelles : ${data.annualCharges}
-Taxe foncière : ${data.propertyTax}
-
-Activité locataire : ${data.tenantActivity}
-Fin de bail : ${data.leaseEndDate}
-
-Commentaire :
-${data.additionalInfo}
-
-Documents :
-Bail commercial : ${data.commercialLeaseFile || ''}
-Taxe foncière : ${data.propertyTaxFile || ''}
-Plans : ${data.plansFile || ''}
-Photos : ${data.photosFile || ''}
-Autres : ${data.otherDocumentsFile || ''}
-`
-    });
+    try {
+      await sendLeadNotification(data);
+    } catch (mailError) {
+      console.error('Erreur envoi email notification lead:', mailError);
+    }
 
     return NextResponse.json(
       {
         message:
-          'Votre demande a bien été envoyée. Nous reviendrons vers vous rapidement.'
+          'Votre demande a bien été envoyée. Si vous le souhaitez, vous pourrez nous transmettre les documents ou informations complémentaires dans un second temps.'
       },
       { status: 201 }
     );
   } catch (error) {
     console.error('Erreur /api/leads:', error);
     return NextResponse.json(
-      { error: 'Erreur serveur, veuillez réessayer.' },
+      {
+        error: 'Erreur serveur, veuillez réessayer.'
+      },
       { status: 500 }
     );
   }

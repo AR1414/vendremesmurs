@@ -8,39 +8,38 @@ datasource db {
 }
 
 model Lead {
-  id                    Int      @id @default(autoincrement())
+  id                   Int      @id @default(autoincrement())
+  ownerName            String
+  ownerEmail           String
+  ownerPhone           String
 
-  fullAddress           String
-  sector                String
-  city                  String?
+  propertyAddress      String
+  propertyCity         String
+  propertyPostalCode   String
+  propertyType         String
 
-  groundFloorArea       Float
-  hasBasement           String
-  basementArea          Float?
-  hasUpperFloor         String
-  upperFloorArea        Float?
-  hasApartment          String
-  apartmentArea         Float?
+  areaSqm              Int
+  hasStorageOrBasement Boolean
+  basementArea         Float?
+  upperFloorArea       Float?
+  apartmentArea        Float?
 
-  occupancyStatus       String
-  isBusinessAlsoForSale String?
-  annualRentExclCharges Float?
-  tenantActivity        String?
-  leaseEndDate          DateTime?
-  annualCharges         Float?
-  propertyTax           Float?
+  occupancyStatus      String
+  businessSaleStatus   String?
+  tenantActivity       String?
+  annualRent           Float?
+  annualCharges        Float?
+  propertyTax          Float?
+  leaseEndDate         DateTime?
+  askingPrice          Float?
 
-  additionalInfo        String?
+  additionalInfo       String?
 
-  ownerName             String
-  ownerPhone            String
-  ownerEmail            String
+  bailCommercialFile   String?
+  propertyTaxFile      String?
+  propertyPhotosFile   String?
+  floorPlansFile       String?
+  otherDocumentsFile   String?
 
-  commercialLeaseFile   String?
-  propertyTaxFile       String?
-  plansFile             String?
-  photosFile            String?
-  otherDocumentsFile    String?
-
-  createdAt             DateTime @default(now())
+  createdAt            DateTime @default(now())
 }
