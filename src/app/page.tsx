@@ -18,7 +18,7 @@ const steps = [
 
 const advantages = [
   'Dépôt rapide en quelques minutes',
-  'Étude ciblée Paris & première couronne',
+  'Étude ciblée Paris & Banlieue',
   'Analyse de biens libres ou occupés',
   'Transmission des documents possible à tout moment'
 ];
@@ -87,7 +87,7 @@ export default function HomePage() {
                 Déposez les informations essentielles de votre bien en quelques instants. Les documents et éléments
                 complémentaires peuvent être transmis dès maintenant ou dans un second temps.
               </p>
-              <p className="mt-5 text-sm text-slate-300">Un projet développé par Vendremesmurs@gmail.com</p>
+              <p className="mt-5 text-sm text-slate-300">Un projet développé par VendreMesMurs</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <a
                   href="#formulaire"
@@ -202,8 +202,7 @@ export default function HomePage() {
           <div>
             <BrandLogo compact />
             <p className="mt-3 text-sm text-slate-600">VMM – VendreMesMurs.fr</p>
-            <p className="text-sm text-slate-600">Vendremesmurs@gmail.com</p>
-            <p className="text-sm text-slate-600">Paris & Première couronne</p>
+            <p className="text-sm text-slate-600">Paris & Banlieue</p>
           </div>
           <div className="flex items-end gap-6 text-sm font-medium text-[#0B1F3A] md:justify-end">
             <Link href="/mentions-legales" className="hover:underline">

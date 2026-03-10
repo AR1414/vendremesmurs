@@ -16,7 +16,7 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: 'VMM – VendreMesMurs.fr | Vente de murs commerciaux',
   description:
-    'Plateforme premium pour propriétaires souhaitant céder leurs murs commerciaux à Paris et en première couronne.',
+    'Plateforme premium pour propriétaires souhaitant céder leurs murs commerciaux à Paris et en Banlieue.',
   metadataBase: new URL('https://vendremesmurs.fr'),
   openGraph: {
     title: 'VMM – VendreMesMurs.fr',

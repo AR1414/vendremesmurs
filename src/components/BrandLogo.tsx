@@ -12,7 +12,7 @@ export function BrandLogo({ compact = false }: BrandLogoProps) {
       </span>
       <span className="flex flex-col">
         <span className="text-sm font-bold tracking-[0.08em] text-[#0B1F3A]">VendreMesMurs.fr</span>
-        {!compact ? <span className="text-xs text-slate-500">Un projet développé par Vendremesmurs@gmail.com</span> : null}
+        {!compact ? <span className="text-xs text-slate-500">Un projet développé par VendreMesMurs</span> : null}
       </span>
     </Link>
   );

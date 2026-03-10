@@ -84,7 +84,7 @@ export function LeadForm() {
             Secteur *
             <select name="sector" value={sector} onChange={(e) => setSector(e.target.value as Sector)} className={inputClass}>
               <option value="paris">Paris</option>
-              <option value="premiere-couronne">Première couronne</option>
+              <option value="premiere-couronne">Banlieue</option>
             </select>
           </label>
 
