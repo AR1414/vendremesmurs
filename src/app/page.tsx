@@ -11,10 +11,36 @@ const trustItems = [
 ] as const;
 
 const steps = [
-  'Vous renseignez les informations essentielles du bien',
-  'Nous analysons votre dossier',
-  'Vous pouvez compléter les documents maintenant ou plus tard'
-];
+  {
+    title: 'Déposez votre bien',
+    icon: 'document',
+    content: (
+      <>
+        Remplissez le formulaire en quelques minutes avec les informations essentielles.
+      </>
+    )
+  },
+  {
+    title: 'Analyse et estimation',
+    icon: 'chart',
+    content: (
+      <>
+        Notre équipe analyse votre bien et vous transmet une <span className="font-bold text-[#F4C542]">estimation</span>{' '}
+        <span className="font-bold text-[#F4C542]">confidentielle</span>.
+      </>
+    )
+  },
+  {
+    title: 'Mise en relation avec des acquéreurs',
+    icon: 'handshake',
+    content: (
+      <>
+        Nous pouvons vous mettre en relation avec des acquéreurs capables de se positionner{' '}
+        <span className="font-bold text-[#F4C542]">comptant</span>.
+      </>
+    )
+  }
+] as const;
 
 const advantages = [
   'Dépôt rapide en quelques minutes',
@@ -23,7 +49,10 @@ const advantages = [
   'Transmission des documents possible à tout moment'
 ];
 
-function Icon({ name }: { name: 'shield' | 'flash' | 'user' | 'stack' }) {
+type TrustIconName = 'shield' | 'flash' | 'user' | 'stack';
+type StepIconName = 'document' | 'chart' | 'handshake';
+
+function Icon({ name }: { name: TrustIconName }) {
   const base = 'h-5 w-5 text-[#0B1F3A]';
 
   if (name === 'shield') {
@@ -60,6 +89,39 @@ function Icon({ name }: { name: 'shield' | 'flash' | 'user' | 'stack' }) {
   );
 }
 
+function StepIcon({ name }: { name: StepIconName }) {
+  const base = 'h-5 w-5 text-[#0B1F3A]';
+
+  if (name === 'document') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className={base}>
+        <path d="M8 3h6l4 4v13a1 1 0 0 1-1 1H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M14 3v4h4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <path d="M9.5 12h5M9.5 16h5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
+  if (name === 'chart') {
+    return (
+      <svg viewBox="0 0 24 24" fill="none" className={base}>
+        <path d="M4 19h16" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+        <rect x="6" y="11" width="2.5" height="6" rx="0.8" stroke="currentColor" strokeWidth="1.6" />
+        <rect x="11" y="8" width="2.5" height="9" rx="0.8" stroke="currentColor" strokeWidth="1.6" />
+        <rect x="16" y="5" width="2.5" height="12" rx="0.8" stroke="currentColor" strokeWidth="1.6" />
+      </svg>
+    );
+  }
+
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={base}>
+      <path d="M8 12.5 6.2 14.3a2.2 2.2 0 0 1-3.1-3.1l2.8-2.8a2.2 2.2 0 0 1 3.1 0l1.2 1.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="m16 11.5 1.8-1.8a2.2 2.2 0 1 1 3.1 3.1l-2.8 2.8a2.2 2.2 0 0 1-3.1 0l-1.2-1.2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      <path d="m9.5 14.5 5-5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export default function HomePage() {
   return (
     <main className="bg-white text-slate-900">
@@ -81,11 +143,11 @@ export default function HomePage() {
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.26em] text-[#F4C542]">VMM – VendreMesMurs.fr</p>
               <h1 className="mt-4 max-w-3xl font-serif text-4xl leading-tight md:text-6xl">
-                Vendez vos murs commerciaux simplement
+                Obtenez une <span className="font-bold text-[#F4C542]">estimation gratuite</span> de vos murs commerciaux
               </h1>
               <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate-200 md:text-lg">
-                Déposez les informations essentielles de votre bien en quelques instants. Les documents et éléments
-                complémentaires peuvent être transmis dès maintenant ou dans un second temps.
+                Déposez votre bien en quelques minutes et recevez une estimation <span className="font-bold text-[#F4C542]">confidentielle</span>{' '}
+                par notre équipe.
               </p>
               <p className="mt-5 text-sm text-slate-300">Un projet développé par VendreMesMurs</p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -147,9 +209,13 @@ export default function HomePage() {
           <h2 className="font-serif text-3xl text-[#0B1F3A]">Comment ça marche</h2>
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {steps.map((step, index) => (
-              <article key={step} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-                <p className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Étape {index + 1}</p>
-                <p className="mt-3 text-sm font-medium text-[#0B1F3A]">{step}</p>
+              <article key={step.title} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="inline-flex rounded-lg bg-[#F4C542]/25 p-2">
+                  <StepIcon name={step.icon} />
+                </div>
+                <p className="mt-4 text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">Étape {index + 1}</p>
+                <h3 className="mt-2 text-base font-semibold text-[#0B1F3A]">{step.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-700">{step.content}</p>
               </article>
             ))}
           </div>
@@ -176,6 +242,33 @@ export default function HomePage() {
                 className="h-auto w-full"
               />
             </div>
+          </div>
+        </section>
+
+        <section className="mt-14 rounded-3xl border border-slate-200 bg-[#f7f8fb] p-8 md:p-10">
+          <h2 className="font-serif text-3xl text-[#0B1F3A]">Biens actuellement recherchés</h2>
+          <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">
+            Nous étudions activement les typologies de biens suivantes :
+          </p>
+          <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-semibold text-[#0B1F3A]">Murs de boutiques loués</p>
+            </article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-semibold text-[#0B1F3A]">Murs de restaurants avec extraction</p>
+            </article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-semibold text-[#0B1F3A]">Murs commerciaux libres</p>
+            </article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+              <p className="text-sm font-semibold text-[#0B1F3A]">Immeubles avec commerce en pied d’immeuble</p>
+            </article>
+            <article className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm md:col-span-2 lg:col-span-1">
+              <p className="text-sm font-semibold text-[#0B1F3A]">
+                Actifs situés à <span className="font-bold text-[#F4C542]">Paris</span> et en{' '}
+                <span className="font-bold text-[#F4C542]">banlieue</span>
+              </p>
+            </article>
           </div>
         </section>
 

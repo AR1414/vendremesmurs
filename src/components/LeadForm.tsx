@@ -286,7 +286,7 @@ export function LeadForm() {
       <div className="mt-8 rounded-2xl border border-slate-200 bg-gradient-to-b from-white to-slate-50/60 p-4 md:p-6">
         <div className="space-y-3">
           <p className="text-xs leading-relaxed text-slate-600">
-            En soumettant, vous acceptez d’être recontacté par notre équipe VMM.
+            Votre demande est <span className="font-bold text-[#F4C542]">strictement confidentielle</span> et vous pourrez être recontacté par notre équipe VMM.
           </p>
 
           <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3">
