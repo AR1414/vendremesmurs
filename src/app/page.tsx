@@ -307,14 +307,12 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
+      <div style={{ textAlign: 'center', marginTop: '50px', paddingBottom: '20px', fontSize: '14px', color: '#888' }}>
+        <p>Une question ? Contactez-nous :</p>
+        <a href="mailto:vendremesmurs@gmail.com" style={{ color: '#000', fontWeight: '500' }}>
+          vendremesmurs@gmail.com
+        </a>
+      </div>
     </main>
   );
 }
-<div style={{ textAlign: 'center', marginTop: '50px', paddingBottom: '20px', fontSize: '14px', color: '#888' }}>
-  Une question ? Contactez-nous :
-  <br />
-  <a href="mailto:vendremesmurs@gmail.com" style={{ color: '#000', fontWeight: '500' }}>
-    vendremesmurs@gmail.com
-  </a>
-</div>
-
