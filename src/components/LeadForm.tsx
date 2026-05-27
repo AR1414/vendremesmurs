@@ -45,11 +45,8 @@ export function LeadForm() {
       setHasUpperFloor('non');
       setHasApartment('non');
       setOccupancyStatus('libre');
-      setMessage(
-        data.message ||
-          'Votre demande a bien été envoyée. Si vous le souhaitez, vous pourrez nous transmettre les documents ou informations complémentaires dans un second temps.'
-      );
       trackGoogleAdsConversion();
+      window.location.href = 'https://www.vendremesmurs.fr/merci';
     } catch (error) {
       setMessage(error instanceof Error ? error.message : 'Une erreur est survenue.');
       setIsError(true);
