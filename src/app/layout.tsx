@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Manrope, Playfair_Display } from 'next/font/google';
 import { TrackingScripts } from '@/components/TrackingScripts';
 import './globals.css';
@@ -38,6 +39,21 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={`${manrope.variable} ${playfair.variable}`}>
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18188089574"
+          strategy="beforeInteractive"
+        />
+        <Script id="google-ads-gtag-init" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-18188089574');
+          `}
+        </Script>
+      </head>
       <body>
         {children}
         <TrackingScripts />
